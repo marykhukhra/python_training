@@ -20,7 +20,7 @@ class ContactTestCase(unittest.TestCase):
         self.open_home_page(wd)
         self.login(wd, "admin", "secret")
         self.open_page_add_contacts(wd)
-        self.create_contacts(wd, Contact("Ivan", "Ivanovich", "Ivanov", "ivanushka", "test", "test", "678-667-55",
+        self.create_contact(wd, Contact("Ivan", "Ivanovich", "Ivanov", "ivanushka", "test", "test", "678-667-55",
                                          "87899877777",
                                          "5656787887", "test@gmail.com", "13", "November", "1994")
                              )
@@ -33,7 +33,7 @@ class ContactTestCase(unittest.TestCase):
     def return_to_home(self, wd):
         wd.find_element_by_link_text("home").click()
 
-    def create_contacts(self, wd, contact):
+    def create_contact(self, wd, contact):
         wd.find_element_by_name("firstname").click()
         wd.find_element_by_name("firstname").send_keys(contact.firstname)
         wd.find_element_by_name("middlename").send_keys(contact.middlename)
