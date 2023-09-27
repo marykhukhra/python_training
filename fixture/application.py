@@ -1,16 +1,15 @@
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.select import Select
+from fixture.session import SessionHelper
 
 
 class Application:
 
     def __init__(self):
-        self.wd = webdriver.Firefox(executable_path=r'geckodriver.exe')
+        self.wd = webdriver.Firefox(executable_path=r'../geckodriver.exe')
         self.wd.implicitly_wait(60)
-
-    def logout(self):
-        self.wd.find_element_by_link_text("Logout").click()
+        self.session = SessionHelper(self)
 
     def return_to_groups_page(self):
         self.wd.find_element_by_link_text("group page").click()
@@ -77,13 +76,6 @@ class Application:
     def open_groups_page(self):
         driver = self.wd
         driver.find_element_by_link_text("groups").click()
-
-    def login(self, username, password):
-        self.open_home_page()
-        self.wd.find_element_by_name("user").click()
-        self.wd.find_element_by_name("user").send_keys(username)
-        self.wd.find_element_by_name("pass").send_keys(password)
-        self.wd.find_element_by_xpath("//input[@value='Login']").click()
 
     def open_home_page(self):
         self.wd.get("http://localhost/addressbook/")
