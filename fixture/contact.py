@@ -1,3 +1,5 @@
+import time
+
 from selenium.webdriver.support.select import Select
 
 
@@ -39,6 +41,20 @@ class ContactHelper:
         # submit contact creation
         driver.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
         self.return_to_home()
+
+    def delete_contact(self):
+        wd = self.app.wd
+        self.app.wd.find_element_by_link_text("home").click()
+        wd.find_element_by_name("selected[]").click()
+        wd.find_element_by_xpath("//input[@value='Delete']").click()
+        wd.switch_to.alert.accept()
+
+    def edit_contact(self, new_email):
+        wd = self.app.wd
+        self.app.wd.find_element_by_link_text("home").click()
+        wd.find_element_by_name("selected[]").click()
+        wd.find_element_by_xpath("//img[@alt='Edit']").click()
+        wd.find_element_by_name("email").send_keys(new_email)
 
     def return_to_home(self):
         self.app.wd.find_element_by_link_text("home").click()

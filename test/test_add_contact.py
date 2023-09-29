@@ -5,14 +5,7 @@ from model.contact import Contact
 from fixture.application import Application
 
 
-@pytest.fixture()
-def app(request):
-    fixture = Application()
-    request.addfinalizer(fixture.destroy)
-    return fixture
-
-
-def test_contact_test_case(app):
+def test_contact(app):
     app.session.login(username="admin", password="secret")
     app.contact.create(Contact("Ivan", "Ivanovich", "Ivanov", "ivanushka", "test", "test", "678-667-55",
                                "87899877777",
