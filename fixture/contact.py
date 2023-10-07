@@ -1,5 +1,3 @@
-import time
-
 from selenium.webdriver.support.select import Select
 
 
@@ -11,6 +9,13 @@ class ContactHelper:
     def create(self, contact):
         driver = self.app.wd
         self.open_page_add_contact()
+        self.contact_parametr(contact)
+        # submit contact creation
+        driver.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
+        self.return_to_home()
+
+    def contact_parametr(self, contact):
+        driver = self.app.wd
         driver.find_element_by_name("firstname").click()
         driver.find_element_by_name("firstname").send_keys(contact.firstname)
         driver.find_element_by_name("middlename").send_keys(contact.middlename)
@@ -26,7 +31,7 @@ class ContactHelper:
         driver.find_element_by_name("home").send_keys(contact.home_phone)
         driver.find_element_by_name("mobile").click()
         driver.find_element_by_name("mobile").send_keys(contact.self_mobile)
-        driver.find_element_by_name("work").click()
+        driver.find_element_by_name("mobile").click()
         driver.find_element_by_name("work").send_keys(contact.work_mobile)
         driver.find_element_by_name("email").click()
         driver.find_element_by_name("email").send_keys(contact.email)
@@ -36,10 +41,35 @@ class ContactHelper:
         Select(driver.find_element_by_name("bmonth")).select_by_visible_text(contact.bmonth)
         driver.find_element_by_name("byear").click()
         driver.find_element_by_name("byear").send_keys(contact.byear)
-        driver.find_element_by_name("new_group").click()
-        Select(driver.find_element_by_name("new_group")).select_by_visible_text("group")
-        # submit contact creation
-        driver.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
+
+    def contact_parametr_delete(self, contact):
+        driver = self.app.wd
+        driver.find_element_by_name("firstname").click()
+        driver.find_element_by_name("firstname").clear()
+        driver.find_element_by_name("lastname").click()
+        driver.find_element_by_name("lastname").clear()
+        driver.find_element_by_name("middlename").clear()
+        driver.find_element_by_name("nickname").click()
+        driver.find_element_by_name("nickname").clear()
+        driver.find_element_by_name("company").click()
+        driver.find_element_by_name("company").clear()
+        driver.find_element_by_name("address").click()
+        driver.find_element_by_name("address").clear()
+        driver.find_element_by_name("home").click()
+        driver.find_element_by_name("home").clear()
+        driver.find_element_by_name("mobile").click()
+        driver.find_element_by_name("mobile").clear()
+        driver.find_element_by_name("email").click()
+        driver.find_element_by_name("email").clear()
+
+    def edit_contact(self, contact):
+        wd = self.app.wd
+        self.app.wd.find_element_by_link_text("home").click()
+        wd.find_element_by_name("selected[]").click()
+        wd.find_element_by_xpath("//img[@alt='Edit']").click()
+        self.contact_parametr_delete(wd)
+        self.contact_parametr(contact)
+        wd.find_element_by_name("update").click()
         self.return_to_home()
 
     def delete_contact(self):
@@ -48,13 +78,6 @@ class ContactHelper:
         wd.find_element_by_name("selected[]").click()
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to.alert.accept()
-
-    def edit_contact(self, new_email):
-        wd = self.app.wd
-        self.app.wd.find_element_by_link_text("home").click()
-        wd.find_element_by_name("selected[]").click()
-        wd.find_element_by_xpath("//img[@alt='Edit']").click()
-        wd.find_element_by_name("email").send_keys(new_email)
 
     def return_to_home(self):
         self.app.wd.find_element_by_link_text("home").click()
