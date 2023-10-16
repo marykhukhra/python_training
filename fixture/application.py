@@ -8,7 +8,6 @@ class Application:
 
     def __init__(self):
         self.wd = webdriver.Firefox(executable_path=r'../geckodriver.exe')
-        self.wd.implicitly_wait(5)
         self.session = SessionHelper(self)
         self.group = GroupHelper(self)
         self.contact = ContactHelper(self)
@@ -21,7 +20,9 @@ class Application:
             return False
 
     def open_home_page(self):
-        self.wd.get("http://localhost/addressbook/")
+        wd = self.wd
+        if not (wd.current_url.endswith("/addressbook/") and len(wd.find_elements_by_name("//input[@value='Send e-Mail']")) > 0):
+            self.wd.get("http://localhost/addressbook/")
 
     def destroy(self):
         self.wd.quit()

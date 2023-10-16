@@ -42,7 +42,7 @@ class ContactHelper:
         driver.find_element_by_name("byear").click()
         driver.find_element_by_name("byear").send_keys(contact.byear)
 
-    def contact_parametr_delete(self, contact):
+    def contact_parameter_delete(self):
         driver = self.app.wd
         driver.find_element_by_name("firstname").click()
         driver.find_element_by_name("firstname").clear()
@@ -64,10 +64,9 @@ class ContactHelper:
 
     def edit_contact(self, contact):
         wd = self.app.wd
-        self.app.wd.find_element_by_link_text("home").click()
         wd.find_element_by_name("selected[]").click()
         wd.find_element_by_xpath("//img[@alt='Edit']").click()
-        self.contact_parametr_delete(wd)
+        self.contact_parameter_delete()
         self.contact_parametr(contact)
         wd.find_element_by_name("update").click()
         self.return_to_home()
@@ -83,7 +82,9 @@ class ContactHelper:
         self.app.wd.find_element_by_link_text("home").click()
 
     def open_page_add_contact(self):
-        self.app.wd.find_element_by_link_text("add new").click()
+        wd = self.app.wd
+        if not (wd.current_url.endswith("/edit.php") and len(wd.find_elements_by_name("add new")) > 0):
+            self.app.wd.find_element_by_link_text("add new").click()
 
     def count_contact(self):
         wd = self.app.wd
