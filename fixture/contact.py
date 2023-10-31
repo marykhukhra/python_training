@@ -1,4 +1,7 @@
+from itertools import count
+
 from selenium.webdriver.support.select import Select
+from model.contact import Contact
 
 
 class ContactHelper:
@@ -90,3 +93,15 @@ class ContactHelper:
         wd = self.app.wd
         self.app.wd.find_element_by_link_text("home").click()
         return len(wd.find_elements_by_name("selected[]"))
+
+    def get_contact_list(self):
+        wd = self.app.wd
+        self.return_to_home()
+        contacts = []
+        for element in wd.find_elements_by_name("entry"):
+            id = element.find_element_by_name("selected[]").get_attribute("value")
+            element_entities = element.find_elements_by_css_selector("*")
+            surname = element_entities[2].text
+            name = element_entities[3].text
+            contacts.append(Contact(firstname=name, lastname=surname, id=id))
+        return contacts
