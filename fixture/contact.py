@@ -67,10 +67,15 @@ class ContactHelper:
 
     def edit_contact(self, contact):
         wd = self.app.wd
+        self.return_to_home()
         wd.find_element_by_name("selected[]").click()
         wd.find_element_by_xpath("//img[@alt='Edit']").click()
-        self.contact_parameter_delete()
-        self.contact_parametr(contact)
+        contact_name_field = wd.find_element_by_name("firstname")
+        contact_name_field.clear()
+        contact_name_field.send_keys(contact.firstname)
+        contact_name_field = wd.find_element_by_name("lastname")
+        contact_name_field.clear()
+        contact_name_field.send_keys(contact.lastname)
         wd.find_element_by_name("update").click()
         self.return_to_home()
 
@@ -100,8 +105,8 @@ class ContactHelper:
         contacts = []
         for element in wd.find_elements_by_name("entry"):
             id = element.find_element_by_name("selected[]").get_attribute("value")
-            element_entities = element.find_elements_by_css_selector("*")
-            surname = element_entities[2].text
-            name = element_entities[3].text
+            element_entities = element.find_elements_by_tag_name("td")
+            surname = element_entities[1].text
+            name = element_entities[2].text
             contacts.append(Contact(firstname=name, lastname=surname, id=id))
         return contacts
