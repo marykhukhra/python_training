@@ -1,6 +1,5 @@
-from itertools import count
-
 from selenium.webdriver.support.select import Select
+
 from model.contact import Contact
 
 
@@ -16,6 +15,7 @@ class ContactHelper:
         # submit contact creation
         driver.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
         self.return_to_home()
+        self.contact_cache = None
 
     def contact_parametr(self, contact):
         driver = self.app.wd
@@ -78,6 +78,7 @@ class ContactHelper:
         contact_name_field.send_keys(contact.lastname)
         wd.find_element_by_name("update").click()
         self.return_to_home()
+        self.contact_cache = None
 
     def delete_contact(self):
         wd = self.app.wd
@@ -85,6 +86,7 @@ class ContactHelper:
         wd.find_element_by_name("selected[]").click()
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to.alert.accept()
+        self.contact_cache = None
 
     def return_to_home(self):
         self.app.wd.find_element_by_link_text("home").click()
@@ -99,14 +101,17 @@ class ContactHelper:
         self.app.wd.find_element_by_link_text("home").click()
         return len(wd.find_elements_by_name("selected[]"))
 
+    contact_cache = None
+
     def get_contact_list(self):
-        wd = self.app.wd
-        self.return_to_home()
-        contacts = []
-        for element in wd.find_elements_by_name("entry"):
-            id = element.find_element_by_name("selected[]").get_attribute("value")
-            element_entities = element.find_elements_by_tag_name("td")
-            surname = element_entities[1].text
-            name = element_entities[2].text
-            contacts.append(Contact(firstname=name, lastname=surname, id=id))
-        return contacts
+        if self.contact_cache is None:
+            wd = self.app.wd
+            self.return_to_home()
+            self.contact_cache = []
+            for element in wd.find_elements_by_name("entry"):
+                id = element.find_element_by_name("selected[]").get_attribute("value")
+                element_entities = element.find_elements_by_tag_name("td")
+                surname = element_entities[1].text
+                name = element_entities[2].text
+                self.contact_cache.append(Contact(firstname=name, lastname=surname, id=id))
+        return list(self.contact_cache)
