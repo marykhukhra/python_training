@@ -1,14 +1,16 @@
+from random import randrange
 from model.group import Group
 
 
 def test_edit_group(app):
     if app.group.count() == 0:
-        app.group.create(Group(name="test"))
+        app.group.create(Group(name="test", header="headergr5", footer="new footer"))
     old_groups = app.group.get_group_list()
-    group = Group(name="updated", header="gr5", footer="new footer")
-    group.id = old_groups[2].id
-    app.group.edit_group(group)
+    index = randrange(len(old_groups))
+    group = Group(name="tt", header="he", footer="newfooter")
+    group.id = old_groups[index].id
+    app.group.edit_group_by_index(index, group)
     assert len(old_groups) == app.group.count()
     new_groups = app.group.get_group_list()
-    old_groups[2] = group
+    old_groups[index] = group
     assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)

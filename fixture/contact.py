@@ -65,10 +65,18 @@ class ContactHelper:
         driver.find_element_by_name("email").click()
         driver.find_element_by_name("email").clear()
 
-    def edit_contact(self, contact):
+    def select_contact_by_index(self, index):
+        # select first group
+        wd = self.app.wd
+        wd.find_elements_by_name("selected[]")[index].click()
+
+    def edit_contact(self):
+        self.edit_contact_by_index(0)
+
+    def edit_contact_by_index(self, index, contact):
         wd = self.app.wd
         self.return_to_home()
-        wd.find_element_by_name("selected[]").click()
+        self.select_contact_by_index(index)
         wd.find_element_by_xpath("//img[@alt='Edit']").click()
         contact_name_field = wd.find_element_by_name("firstname")
         contact_name_field.clear()
@@ -81,9 +89,12 @@ class ContactHelper:
         self.contact_cache = None
 
     def delete_contact(self):
+        self.delete_contact_by_index(0)
+
+    def delete_contact_by_index(self, index):
         wd = self.app.wd
         self.app.wd.find_element_by_link_text("home").click()
-        wd.find_element_by_name("selected[]").click()
+        self.select_contact_by_index(index)
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to.alert.accept()
         self.contact_cache = None
