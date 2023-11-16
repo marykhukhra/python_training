@@ -7,7 +7,8 @@ def test_edit_contact(app):
     if app.contact.count_contact() == 0:
         app.contact.create(Contact("Ivan", "Ivanovich", "Ivanov", "ivanushka", "test", "test", "67866755",
                                    "87899877777",
-                                   "5656787887", "test@gmail.com", "test@gmail.com", "test@gmail.com", "13", "November",
+                                   "5656787887", "454455", "test@gmail.com", "test@gmail.com", "test@gmail.com", "13",
+                                   "November",
                                    "1994")
                            )
     old_contacts = app.contact.get_contact_list()

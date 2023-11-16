@@ -166,9 +166,10 @@ class ContactHelper:
         home_phone = wd.find_element_by_name("home").get_attribute("value")
         self_mobile = wd.find_element_by_name("mobile").get_attribute("value")
         work_mobile = wd.find_element_by_name("work").get_attribute("value")
+        phone2 = wd.find_element_by_name("fax").get_attribute("value")
         return Contact(firstname=firstname, lastname=lastname, address=address, id=id, email=email, email2=email2,
                        email3=email3,
-                       home_phone=home_phone, self_mobile=self_mobile, work_mobile=work_mobile)
+                       home_phone=home_phone, self_mobile=self_mobile, work_mobile=work_mobile, phone2=phone2)
 
     def contact_form_view_page(self, index):
         wd = self.app.wd
