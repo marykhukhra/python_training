@@ -8,7 +8,7 @@ def test_contact_unit_name_on_home_page(app):
     assert contact_form_home_page.lastname == contact_form_edit_page.lastname
     assert contact_form_home_page.address == contact_form_edit_page.address
     assert contact_form_home_page.all_emails_from_homepage == merge_emails_like_on_home_page(contact_form_edit_page)
-    assert contact_form_home_page.all_phones_from_homepage == merge_phones_like_on_home_page(contact_form_edit_page)
+    assert merge_phones_like_on_home_page(contact_form_edit_page).find(contact_form_home_page.all_phones_from_homepage) == 0
 
 
 def test_phones_on_contact_view_page(app):

@@ -16,7 +16,7 @@ class Contact:
         self.home_phone = home_phone
         self.self_mobile = self_mobile
         self.work_mobile = work_mobile
-        self.phone2 =phone2
+        self.phone2 = phone2
         self.email = email
         self.email2 = email2
         self.email3 = email3
@@ -28,7 +28,7 @@ class Contact:
         self.id = id
 
     def __repr__(self):
-        return "%s:%s:%s" % (self.id, self.firstname, self.lastname)
+        return "%s:%s;%s;" % (self.id, self.firstname, self.middlename)
 
     def __eq__(self, other):
         return (self.id is None or other.id is None or self.id == other.id) and (
