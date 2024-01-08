@@ -13,3 +13,5 @@ atomicwrites~=1.4.1
 pyparsing~=3.0.7
 setuptools~=59.6.0
 zipp~=3.6.0
+PyMySQL~=1.0.2
+jsonpickle~=2.2.0

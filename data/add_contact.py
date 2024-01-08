@@ -43,7 +43,7 @@ testdata = [
             email=random_string("email", 20),
             email2=random_string("email2", 20),
             email3=random_string("email3", 20), bday=random.randrange(2, 30),
-            bmonth=get_random_month(), byear=random_string("", 5),
+            bmonth=get_random_month(), byear=random.randrange(1950, 2023),
             )
     for i in range(5)
 ]
