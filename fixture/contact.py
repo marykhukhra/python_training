@@ -82,10 +82,29 @@ class ContactHelper:
         wd = self.app.wd
         wd.find_elements_by_xpath("//img[@alt='Edit']")[index].click()
 
+    def select_contact_by_id(self, id):
+        # select contact
+        wd = self.app.wd
+        url = "edit.php?id=%s" % id
+        wd.find_element_by_xpath('//a[@href="' + url + '"]').click()
+
     def edit_contact_by_index(self, index, contact):
         wd = self.app.wd
         self.return_to_home()
         self.select_contact_by_index(index)
+        contact_name_field = wd.find_element_by_name("firstname")
+        contact_name_field.clear()
+        contact_name_field.send_keys(contact.firstname)
+        contact_name_field = wd.find_element_by_name("lastname")
+        contact_name_field.clear()
+        contact_name_field.send_keys(contact.lastname)
+        wd.find_element_by_name("update").click()
+        self.return_to_home()
+        self.contact_cache = None
+
+    def edit_contact_by_id(self, id, contact):
+        wd = self.app.wd
+        self.select_contact_by_id(id)
         contact_name_field = wd.find_element_by_name("firstname")
         contact_name_field.clear()
         contact_name_field.send_keys(contact.firstname)
@@ -153,10 +172,10 @@ class ContactHelper:
                 address = element_entities[3].text
                 all_emails = element_entities[4].text
                 all_phones = element_entities[5].text
-                self.contact_cache.append(
-                    Contact(firstname=name, lastname=surname, id=id, address=address,
+                contact = Contact(firstname=name, lastname=surname, id=id, address=address,
                             all_phones_from_homepage=all_phones,
-                            all_emails_from_homepage=all_emails))
+                            all_emails_from_homepage=all_emails)
+                self.contact_cache.append(contact)
         return list(self.contact_cache)
 
     def open_contact_to_edit_by_index(self, index):

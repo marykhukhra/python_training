@@ -35,7 +35,7 @@ class DbFixture:
                 (id, firstname, middlename, lastname, nickname, company, address, home, mobile, phone2, work,
                  email, email2, email3, bday, bmonth, byear) = row
                 list.append(
-                    Contact(id=id, firstname=firstname, middlename=middlename, lastname=lastname, nickname=nickname,
+                    Contact(id=str(id), firstname=firstname, middlename=middlename, lastname=lastname, nickname=nickname,
                             company=company,
                             address=address, home_phone=home, self_mobile=mobile, work_mobile=work,
                             phone2=phone2,

@@ -37,10 +37,8 @@ def db(request):
     db_config = load_config(request.config.getoption("--target"))['db']
     dbfixture = DbFixture(host=db_config['host'], name=db_config['name'], user=db_config['user'],
                           password=db_config['password'])
-
     def fin():
         dbfixture.destroy()
-
     request.addfinalizer(fin)
     return dbfixture
 
@@ -50,14 +48,8 @@ def stop(request):
     def fin():
         fixture.session.ensure_logout()
         fixture.destroy()
-
     request.addfinalizer(fin)
     return fixture
-
-
-def pytest_addoption(parser):
-    parser.addoption("--browser", action="store", default="firefox")
-    parser.addoption("--target", action="store", default="target.json")
 
 
 def pytest_generate_tests(metafunc):
@@ -77,3 +69,14 @@ def load_from_module(module):
 def load_from_json(file):
     with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "data/%s.json" % file)) as f:
         return jsonpickle.decode(f.read())
+
+
+@pytest.fixture
+def check_ui(request):
+    return request.config.getoption("--check_ui")
+
+
+def pytest_addoption(parser):
+    parser.addoption("--browser", action="store", default="firefox")
+    parser.addoption("--target", action="store", default="target.json")
+    parser.addoption("--check_ui", action="store_true")
